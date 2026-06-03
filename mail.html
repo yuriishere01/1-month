@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="title" content="Surprise  | Kunal ">
+    <meta name="github" content="https://github.com/ziddi-shop">
+    <title>Surprise  | Kunal</title>
+    <link rel="website icon" type="png" href="image/gift3.gif">
+    <link rel="stylesheet" href="mail.css">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <title>To You!</title>
+</head>
+<body>
+    <div class="warpper preloading">
+        <div class="box">
+            <div class="mail">
+                <div class="heart">
+                    <img src="image/heart.png" alt="">
+                    <img src="image/heart.png" alt="">
+                    <img src="image/heart.png" alt="">
+                    <img src="image/heart.png" alt="">
+                    <img src="image/heart.png" alt="">
+                </div>
+                <div class="content">
+                    <div class="title">
+                        <h2>To You!</h2>
+                    </div>
+                    <p>
+                        You may not realize it, but you live in every heartbeat of mine. 
+
+When you smile, it feels like the whole world is filled with light. When you're sad, my heart aches with you. Every time I look at you, I want to say I have fallen deeply in love with you. 
+
+My love is like unspoken words, incomplete without you. This friendship is beautiful, but my heart whispers every moment I wish I could make you feel the depth of my love!❤️
+                    </p>
+                    <div class="gifs_left">
+                        <img id="heart__letter" src="https://media.giphy.com/media/YKUvclrGYmDKXwtphf/giphy.gif" alt="" class="animationOp">
+                    </div>
+                    <div class="gifs_right">
+                        <img id="heart__letter" src="https://media.giphy.com/media/YKUvclrGYmDKXwtphf/giphy.gif" alt="" class="animationOp">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="loader-wrapper">
+            <div class="loader">
+                <div class="inner one" style="--i:1;"></div>
+                <div class="inner two" style="--i:1;"></div>
+                <div class="inner three" style="--i:1;"></div>
+                <div class="box-heart">
+                    <div class="heartLoader"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="copy">
+		<p class="text-center text-white text-sm">Made By ~ <a
+			href="https://www.instagram.com/w4s_kunal/">@w4s_kunal</a></p>
+	  </div>
+    
+</body>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+    <script>
+        $(window).on('load', function(event){
+        $('body').removeClass('preloading');
+        $('.loader-wrapper').delay(1000).fadeOut('fast');
+    });
+    </script>
+</html>
+    <!-- Music Player Button -->
+    <div class="music-btn" id="musicBtn">
+        <i class="fa-solid fa-play"></i>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+    <script>
+        $(window).on('load', function(){
+            $('body').removeClass('preloading');
+            $('.loader-wrapper').delay(1000).fadeOut('fast');
+        });
+
+        // Music Player
+        const audio = new Audio('my.mp3');
+        const musicBtn = document.getElementById('musicBtn');
+        let isPlaying = false;
+
+        musicBtn.addEventListener('click', () => {
+            isPlaying = !isPlaying;
+            if (isPlaying) {
+                audio.play();
+                musicBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+                musicBtn.style.background = '#ff4d6d';
+            } else {
+                audio.pause();
+                musicBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+                musicBtn.style.background = '#ff69b4';
+            }
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/js/all.min.js"></script>
+</body>
+</html>
