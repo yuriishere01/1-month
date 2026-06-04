@@ -10,6 +10,7 @@
     <link rel="website icon" type="png" href="image/gift3.gif">
     <link rel="stylesheet" href="mail.css">
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>To You!</title>
 </head>
 <body>
@@ -58,17 +59,8 @@ My love is like unspoken words, incomplete without you. This friendship is beaut
     <div id="copy">
 		<p class="text-center text-white text-sm">Made By ~ <a
 			href="https://www.instagram.com/w4s_kunal/">@w4s_kunal</a></p>
-	  </div>
-    
-</body>
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
-    <script>
-        $(window).on('load', function(event){
-        $('body').removeClass('preloading');
-        $('.loader-wrapper').delay(1000).fadeOut('fast');
-    });
-    </script>
-</html>
+	</div>
+
     <!-- Music Player Button -->
     <div class="music-btn" id="musicBtn">
         <i class="fa-solid fa-play"></i>
@@ -83,28 +75,99 @@ My love is like unspoken words, incomplete without you. This friendship is beaut
 
         // Music Player
         const audio = new Audio('happier_x_perfect.mp3');
-        audio.currentTime = 205; // Set start time to 3:25 (205 seconds)
+        let hasSeeked = false;
 
-        audio.addEventListener('loadedmetadata', () => {
-            audio.currentTime = 205;
-        });
+        const setStartTime = () => {
+            if (!hasSeeked) {
+                // Check if we have a saved playback position from index.html
+                const savedTime = localStorage.getItem('audio_currentTime');
+                const wasPlaying = localStorage.getItem('audio_playing');
+
+                if (savedTime && wasPlaying === 'true') {
+                    audio.currentTime = parseFloat(savedTime);
+                } else if (audio.duration >= 205) {
+                    audio.currentTime = 205; // Default start time (3:25)
+                }
+                hasSeeked = true;
+            }
+        };
+
+        audio.addEventListener('loadedmetadata', setStartTime);
+        audio.addEventListener('loadeddata', setStartTime);
+        audio.addEventListener('canplay', setStartTime);
 
         const musicBtn = document.getElementById('musicBtn');
         let isPlaying = false;
 
-        musicBtn.addEventListener('click', () => {
-            isPlaying = !isPlaying;
-            if (isPlaying) {
-                audio.play();
+        const playAudio = () => {
+            if (isPlaying) return;
+            setStartTime();
+            audio.play().then(() => {
+                isPlaying = true;
+                // Double check if seek succeeded, but only if we didn't restore from index.html
+                const savedTime = localStorage.getItem('audio_currentTime');
+                if (!savedTime && audio.currentTime < 205 && audio.duration >= 205) {
+                    audio.currentTime = 205;
+                }
                 musicBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
                 musicBtn.style.background = '#ff4d6d';
-            } else {
+                removeInteractionListeners();
+                
+                // Clear the temporary transition storage so refresh starts at 3:25
+                localStorage.removeItem('audio_currentTime');
+                localStorage.removeItem('audio_playing');
+            }).catch(err => {
+                console.log("Autoplay prevented by browser, waiting for user gesture.", err);
+            });
+        };
+
+        // Try playing immediately after page loads and loader fades out
+        window.addEventListener('load', () => {
+            setTimeout(playAudio, 1200);
+        });
+
+        // Interaction Fallback: play on any click, touch, keypress, or scroll
+        const events = ['click', 'touchstart', 'mousedown', 'keydown', 'scroll'];
+        const handleInteraction = () => {
+            playAudio();
+        };
+        
+        const addInteractionListeners = () => {
+            events.forEach(event => {
+                document.addEventListener(event, handleInteraction, { once: true });
+            });
+        };
+
+        const removeInteractionListeners = () => {
+            events.forEach(event => {
+                document.removeEventListener(event, handleInteraction);
+            });
+        };
+
+        // Enable fallback listeners
+        addInteractionListeners();
+
+        // Control button click handler (manually toggle play/pause)
+        musicBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // prevent fallback interaction listener from firing
+            if (isPlaying) {
                 audio.pause();
+                isPlaying = false;
                 musicBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
                 musicBtn.style.background = '#ff69b4';
+            } else {
+                isPlaying = false; // Reset to allow playAudio to execute
+                playAudio();
             }
         });
+
+        audio.addEventListener('ended', () => {
+            isPlaying = false;
+            musicBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+            musicBtn.style.background = '#ff69b4';
+            hasSeeked = false;
+            addInteractionListeners(); // Allow starting again on interaction if ended
+        });
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/js/all.min.js"></script>
 </body>
 </html>

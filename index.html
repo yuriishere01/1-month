@@ -95,11 +95,103 @@
 		<p class="text-center text-white text-sm">OG Creator <a
 			href="https://www.instagram.com/w4s_kunal/">@the.adi___01</a></p>
 	  </div>
+    <!-- Music Player Button -->
+    <div class="music-btn" id="musicBtn">
+        <i class="fa-solid fa-play"></i>
+    </div>
 </body>
 <script>
-    var mail = document.querySelector(".mail")
-    mail.addEventListener("click", ()=>{
-        window.location.href = "mail.html"
-    })
+    var mail = document.querySelector(".mail");
+    mail.addEventListener("click", () => {
+        // Save current playback state before navigating
+        if (isPlaying) {
+            localStorage.setItem('audio_currentTime', audio.currentTime);
+            localStorage.setItem('audio_playing', 'true');
+        } else {
+            localStorage.removeItem('audio_currentTime');
+            localStorage.removeItem('audio_playing');
+        }
+        window.location.href = "mail.html";
+    });
+
+    // Music Player
+    const audio = new Audio('happier_x_perfect.mp3');
+    let hasSeeked = false;
+
+    const setStartTime = () => {
+        if (!hasSeeked && audio.duration >= 205) {
+            audio.currentTime = 205; // 3:25
+            hasSeeked = true;
+        }
+    };
+
+    audio.addEventListener('loadedmetadata', setStartTime);
+    audio.addEventListener('loadeddata', setStartTime);
+    audio.addEventListener('canplay', setStartTime);
+
+    const musicBtn = document.getElementById('musicBtn');
+    let isPlaying = false;
+
+    const playAudio = () => {
+        if (isPlaying) return;
+        setStartTime();
+        audio.play().then(() => {
+            isPlaying = true;
+            if (audio.currentTime < 205 && audio.duration >= 205) {
+                audio.currentTime = 205;
+            }
+            musicBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+            musicBtn.style.background = '#ff4d6d';
+            removeInteractionListeners();
+        }).catch(err => {
+            console.log("Autoplay prevented by browser, waiting for user gesture.", err);
+        });
+    };
+
+    // Try playing immediately after page loads
+    window.addEventListener('load', () => {
+        setTimeout(playAudio, 1000);
+    });
+
+    // Interaction Fallback
+    const events = ['click', 'touchstart', 'mousedown', 'keydown', 'scroll'];
+    const handleInteraction = () => {
+        playAudio();
+    };
+    
+    const addInteractionListeners = () => {
+        events.forEach(event => {
+            document.addEventListener(event, handleInteraction, { once: true });
+        });
+    };
+
+    const removeInteractionListeners = () => {
+        events.forEach(event => {
+            document.removeEventListener(event, handleInteraction);
+        });
+    };
+
+    addInteractionListeners();
+
+    musicBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (isPlaying) {
+            audio.pause();
+            isPlaying = false;
+            musicBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+            musicBtn.style.background = '#ff69b4';
+        } else {
+            isPlaying = false;
+            playAudio();
+        }
+    });
+
+    audio.addEventListener('ended', () => {
+        isPlaying = false;
+        musicBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+        musicBtn.style.background = '#ff69b4';
+        hasSeeked = false;
+        addInteractionListeners();
+    });
 </script>
 </html>
