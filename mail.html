@@ -82,7 +82,13 @@ My love is like unspoken words, incomplete without you. This friendship is beaut
         });
 
         // Music Player
-        const audio = new Audio('my.mp3');
+        const audio = new Audio('happier_x_perfect.mp3');
+        audio.currentTime = 205; // Set start time to 3:25 (205 seconds)
+
+        audio.addEventListener('loadedmetadata', () => {
+            audio.currentTime = 205;
+        });
+
         const musicBtn = document.getElementById('musicBtn');
         let isPlaying = false;
 
