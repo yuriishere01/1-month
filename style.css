@@ -7,8 +7,15 @@
 }
 body {
     height: 100vh;
-    background: linear-gradient(rgb(255 255 255 / 90%), rgb(255 63 63 / 0%)), url(image/bgr.jpg);
-    background-size: cover;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+body:not(.started) .wrapper,
+body:not(.started) .wrapper *,
+body:not(.started) .wrapper *::before,
+body:not(.started) .wrapper *::after {
+    animation-play-state: paused !important;
 }
 .wrapper{
     position: relative;
@@ -19,6 +26,8 @@ body {
     align-items: center;
     min-height: 100vh;
     overflow: hidden;
+    background: linear-gradient(rgb(255 255 255 / 90%), rgb(255 63 63 / 0%)), url(image/bgr.jpg);
+    background-size: cover;
 }
 
 .wrapper .crile-1{
@@ -124,7 +133,7 @@ body {
         transform: scale(1);
     }
 }
-.heart{
+.landing-heart{
     position: absolute;
     width: 25%;
     height: 25%;
@@ -135,7 +144,7 @@ body {
     filter: drop-shadow(3px 3px 6px rgba(0,0,0,0.4));
     animation: nhiptim 2s forwards 16s;
 }
-.heart .st0{
+.landing-heart .st0{
     position: absolute;
     fill:none;
     stroke-width: 4px;
@@ -470,7 +479,7 @@ body {
     }
 }
 
-.mail{
+.landing-mail{
     position: absolute;
     z-index: 100000;
     width: 100px;
@@ -494,7 +503,7 @@ body {
 }
 
 
-.mail button{
+.landing-mail button{
     padding: 10px 15px;
     background-color: rgb(255, 109, 136);
     border: none;
@@ -509,10 +518,10 @@ body {
     cursor: pointer;
     color: #fff;
 }
-.mail button >i{
+.landing-mail button >i{
     transition: 0.5s;
 }
-.mail span{
+.landing-mail span{
     position: relative;
     width: 44px;
     height: 44px;
@@ -529,7 +538,7 @@ body {
     color: #fff;
     transition: 1s;
 }
-.mail:hover button i{
+.landing-mail:hover button i{
     cursor: pointer;
     color: rgb(255, 255, 255);
     filter: drop-shadow(0px 0px 10px rgb(255, 187, 199));
@@ -552,13 +561,13 @@ body {
         transform: rotate(0deg);
     }
 }
-.mail:hover > .heartMail{
+.landing-mail:hover > .heartMail{
     transform: translateY(-4px);
     background-color: #f2acc6;
     box-shadow: -2px 2px 5px rgb(0, 0, 0, 0.5);
 }
 
-.mail:hover > .heartMail i{
+.landing-mail:hover > .heartMail i{
     color: #ff0000;
     transform: rotate(360deg);
     filter: drop-shadow(0px 0px 7px rgb(255, 255, 255));
@@ -898,7 +907,7 @@ body {
         animation: bigHeart 2s forwards alternate 11s;
     }
 
-    .mail {
+    .landing-mail {
         position: absolute;
         z-index: 100000;
         width: 89px;
@@ -913,7 +922,7 @@ body {
         animation: boxMail 2s forwards ease-in-out 18s;
     }
 
-    .mail span {
+    .landing-mail span {
         position: relative;
         width: 44px;
         height: 41px;

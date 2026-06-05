@@ -4,20 +4,130 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="title" content="Surprise|Seerat ">
+    <meta name="title" content="Surprise|Seerat">
     <meta name="github" content="https://github.com/ziddi-shop">
-    <title>Surprise|Seerat </title>
+    <title>Surprise|Seerat</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="mail.css">
     <link rel="website icon" type="png" href="image/gift3.gif">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <style>
+        /* Welcome Overlay Styles */
+        .welcome-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 240, 243, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000000000;
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.8s;
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .welcome-overlay.fade-out {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .welcome-card {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(255, 182, 193, 0.6);
+            border-radius: 24px;
+            padding: 40px 30px;
+            width: 90%;
+            max-width: 420px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(255, 75, 110, 0.2);
+            transform: translateY(0);
+            animation: welcomeCardFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes welcomeCardFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .welcome-heart {
+            font-size: 65px;
+            margin-bottom: 20px;
+            animation: heartPulse 1.5s ease-in-out infinite;
+            display: inline-block;
+        }
+
+        @keyframes heartPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        .welcome-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 44px;
+            color: #ff4d6d;
+            margin-bottom: 12px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .welcome-text {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 500;
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        .welcome-btn {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 700;
+            font-size: 18px;
+            color: #fff;
+            background: linear-gradient(45deg, #ff4d6d, #ff8fa3);
+            border: none;
+            padding: 14px 36px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 8px 15px rgba(255, 77, 109, 0.3);
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .welcome-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 20px rgba(255, 77, 109, 0.4);
+            background: linear-gradient(45deg, #ff3355, #ff758f);
+        }
+
+        .welcome-btn:active {
+            transform: translateY(-1px) scale(1);
+            box-shadow: 0 6px 10px rgba(255, 77, 109, 0.3);
+        }
+    </style>
 </head>
-<body>
+<body class="preloading">
+    <!-- Welcome Overlay -->
+    <div class="welcome-overlay" id="welcomeOverlay">
+        <div class="welcome-card">
+            <div class="welcome-heart">❤️</div>
+            <h1 class="welcome-title">Welcome Seerat</h1>
+            <p class="welcome-text">A special surprise awaits you...</p>
+            <button class="welcome-btn" id="enterBtn">Enter Site</button>
+        </div>
+    </div>
+
+    <!-- Landing Page Wrapper -->
     <div class="wrapper">
         <div class="circle-1"></div>
         <div class="circle-2"></div>    
         <div class="crile-3"></div>
         <div class="crile-4"></div>
-        <div class="heart">
+        <div class="landing-heart">
             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                 viewBox="0 0 323.47 305.1" style="enable-background:new 0 0 323.47 305.1;" xml:space="preserve">
             <path class="st0" d="M263.95,161.72c-0.79,0.79-1.59,1.55-2.4,2.28l0.06,0.06l-99.88,99.88l-99.87-99.88l0.05-0.05
@@ -72,7 +182,7 @@
                 <img src="image/big-clouds3.png" alt="">
             </div>
         </div>
-        <div class="mail">
+        <div class="landing-mail">
             <button><i class="fa-regular fa-envelope"></i></button>
             <span class="heartMail"><i class="fa-solid fa-heart"></i></span>
         </div>
@@ -90,108 +200,147 @@
             <p>❤️</p>
         </div>
     </div>
+
+    <!-- Mail Page Wrapper -->
+    <div class="warpper" id="mailPage" style="display: none;">
+        <div class="box">
+            <div class="mail">
+                <div class="mail-heart">
+                    <img src="image/heart.png" alt="">
+                    <img src="image/heart.png" alt="">
+                    <img src="image/heart.png" alt="">
+                    <img src="image/heart.png" alt="">
+                    <img src="image/heart.png" alt="">
+                </div>
+                <div class="content">
+                    <div class="title">
+                        <h2>To You!</h2>
+                    </div>
+                    <p>
+                        You may not realize it, but you live in every heartbeat of mine. 
+
+When you smile, it feels like the whole world is filled with light. When you're sad, my heart aches with you. Every time I look at you, I want to say I have fallen deeply in love with you. 
+
+My love is like unspoken words, incomplete without you. This friendship is beautiful, but my heart whispers every moment I wish I could make you feel the depth of my love!❤️
+                    </p>
+                    <div class="gifs_left">
+                        <img id="heart__letter" src="https://media.giphy.com/media/YKUvclrGYmDKXwtphf/giphy.gif" alt="" class="animationOp">
+                    </div>
+                    <div class="gifs_right">
+                        <img id="heart__letter" src="https://media.giphy.com/media/YKUvclrGYmDKXwtphf/giphy.gif" alt="" class="animationOp">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Transition Loader Wrapper -->
+    <div class="loader-wrapper" id="transitionLoader" style="display: none;">
+        <div class="loader">
+            <div class="inner one" style="--i:1;"></div>
+            <div class="inner two" style="--i:1;"></div>
+            <div class="inner three" style="--i:1;"></div>
+            <div class="loader-box-heart">
+                <div class="heartLoader"></div>
+            </div>
+        </div>
+    </div>
     
     <div id="copy">
 		<p class="text-center text-white text-sm">OG Creator <a
 			href="https://www.instagram.com/w4s_kunal/">@the.adi___01</a></p>
-	  </div>
-    <!-- Music Player Button -->
-    <div class="music-btn" id="musicBtn">
+	</div>
+
+    <!-- Music Player Button (initially hidden, shown after Enter) -->
+    <div class="music-btn" id="musicBtn" style="display: none;">
         <i class="fa-solid fa-play"></i>
     </div>
 </body>
 <script>
-    var mail = document.querySelector(".mail");
-    mail.addEventListener("click", () => {
-        // Save current playback state before navigating
-        if (isPlaying) {
-            localStorage.setItem('audio_currentTime', audio.currentTime);
-            localStorage.setItem('audio_playing', 'true');
-        } else {
-            localStorage.removeItem('audio_currentTime');
-            localStorage.removeItem('audio_playing');
-        }
-        window.location.href = "mail.html";
-    });
-
-    // Music Player
-    const audio = new Audio('happier_x_perfect.mp3');
-    let hasSeeked = false;
-
-    const setStartTime = () => {
-        if (!hasSeeked && audio.duration >= 205) {
-            audio.currentTime = 205; // 3:25
-            hasSeeked = true;
-        }
-    };
-
-    audio.addEventListener('loadedmetadata', setStartTime);
-    audio.addEventListener('loadeddata', setStartTime);
-    audio.addEventListener('canplay', setStartTime);
+    // Audio elements and logic
+    const audio = new Audio('main-agar-kaho.mp3');
+    audio.loop = true; // Loop the audio continuously
 
     const musicBtn = document.getElementById('musicBtn');
     let isPlaying = false;
 
     const playAudio = () => {
         if (isPlaying) return;
-        setStartTime();
         audio.play().then(() => {
             isPlaying = true;
-            if (audio.currentTime < 205 && audio.duration >= 205) {
-                audio.currentTime = 205;
-            }
             musicBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
             musicBtn.style.background = '#ff4d6d';
-            removeInteractionListeners();
         }).catch(err => {
             console.log("Autoplay prevented by browser, waiting for user gesture.", err);
         });
     };
 
-    // Try playing immediately after page loads
-    window.addEventListener('load', () => {
-        setTimeout(playAudio, 1000);
+    const pauseAudio = () => {
+        if (!isPlaying) return;
+        audio.pause();
+        isPlaying = false;
+        musicBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+        musicBtn.style.background = '#ff69b4';
+    };
+
+    // Welcome Screen Handlers
+    const welcomeOverlay = document.getElementById('welcomeOverlay');
+    const enterBtn = document.getElementById('enterBtn');
+
+    enterBtn.addEventListener('click', () => {
+        // Start playing audio from the beginning
+        audio.currentTime = 0;
+        playAudio();
+
+        // Start page entrance animations
+        document.body.classList.add('started');
+
+        // Fade out welcome overlay
+        welcomeOverlay.classList.add('fade-out');
+        setTimeout(() => {
+            welcomeOverlay.style.display = 'none';
+        }, 800);
+
+        // Make music control button visible
+        musicBtn.style.display = 'flex';
     });
 
-    // Interaction Fallback
-    const events = ['click', 'touchstart', 'mousedown', 'keydown', 'scroll'];
-    const handleInteraction = () => {
-        playAudio();
-    };
-    
-    const addInteractionListeners = () => {
-        events.forEach(event => {
-            document.addEventListener(event, handleInteraction, { once: true });
-        });
-    };
-
-    const removeInteractionListeners = () => {
-        events.forEach(event => {
-            document.removeEventListener(event, handleInteraction);
-        });
-    };
-
-    addInteractionListeners();
-
+    // Manual audio controls
     musicBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         if (isPlaying) {
-            audio.pause();
-            isPlaying = false;
-            musicBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
-            musicBtn.style.background = '#ff69b4';
+            pauseAudio();
         } else {
-            isPlaying = false;
             playAudio();
         }
     });
 
-    audio.addEventListener('ended', () => {
-        isPlaying = false;
-        musicBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
-        musicBtn.style.background = '#ff69b4';
-        hasSeeked = false;
-        addInteractionListeners();
+    // SPA Navigation transition logic
+    const landingMail = document.querySelector(".landing-mail");
+    const landingWrapper = document.querySelector(".wrapper");
+    const mailWrapper = document.getElementById("mailPage");
+    const loaderWrapper = document.getElementById("transitionLoader");
+
+    landingMail.addEventListener("click", () => {
+        // 1. Show the loader wrapper
+        loaderWrapper.style.display = "block";
+        loaderWrapper.style.opacity = "1";
+        
+        // 2. Perform background switch after 1.2s
+        setTimeout(() => {
+            landingWrapper.style.display = "none";
+            mailWrapper.style.display = "flex";
+            mailWrapper.classList.add('active');
+            document.body.classList.remove('preloading');
+            
+            // 3. Fade out loader wrapper smoothly
+            loaderWrapper.style.transition = "opacity 0.5s ease";
+            loaderWrapper.style.opacity = "0";
+            
+            setTimeout(() => {
+                loaderWrapper.style.display = "none";
+            }, 500);
+        }, 1200);
     });
 </script>
 </html>
