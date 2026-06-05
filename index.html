@@ -232,6 +232,79 @@ My love is like unspoken words, incomplete without you. This friendship is beaut
                 </div>
             </div>
         </div>
+        <!-- Back Button for Mail -->
+        <button class="back-btn" id="mailBackBtn" style="position: absolute; bottom: 40px; margin-top: 0;"><i class="fa-solid fa-arrow-left"></i> Back</button>
+    </div>
+
+    <!-- Hanging Photos Page Wrapper -->
+    <div class="photos-wrapper" id="photosPage" style="display: none;">
+        <div class="clothesline-container">
+            <!-- Row 1 -->
+            <div class="clothesline row-1">
+                <!-- Photo 1 -->
+                <div class="hanging-photo-container" style="--sway-delay: 0s; --string-height: 80px; --rotate-angle: -4deg;">
+                    <div class="peg"></div>
+                    <div class="string"></div>
+                    <div class="polaroid">
+                        <img src="image/1.jpg" alt="Photo 1">
+                        <div class="caption">Memory 1</div>
+                    </div>
+                </div>
+                <!-- Photo 2 -->
+                <div class="hanging-photo-container" style="--sway-delay: 0.3s; --string-height: 120px; --rotate-angle: 3deg;">
+                    <div class="peg"></div>
+                    <div class="string"></div>
+                    <div class="polaroid">
+                        <img src="image/2.jpg" alt="Photo 2">
+                        <div class="caption">Memory 2</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Row 2 -->
+            <div class="clothesline row-2">
+                <!-- Photo 3 -->
+                <div class="hanging-photo-container" style="--sway-delay: 0.6s; --string-height: 90px; --rotate-angle: -2deg;">
+                    <div class="peg"></div>
+                    <div class="string"></div>
+                    <div class="polaroid">
+                        <img src="image/3.jpg" alt="Photo 3">
+                        <div class="caption">Memory 3</div>
+                    </div>
+                </div>
+                <!-- Photo 4 -->
+                <div class="hanging-photo-container" style="--sway-delay: 0.1s; --string-height: 130px; --rotate-angle: 5deg;">
+                    <div class="peg"></div>
+                    <div class="string"></div>
+                    <div class="polaroid">
+                        <img src="image/4.jpg" alt="Photo 4">
+                        <div class="caption">Memory 4</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Row 3 -->
+            <div class="clothesline row-3">
+                <!-- Photo 5 -->
+                <div class="hanging-photo-container" style="--sway-delay: 0.4s; --string-height: 95px; --rotate-angle: -3deg;">
+                    <div class="peg"></div>
+                    <div class="string"></div>
+                    <div class="polaroid">
+                        <img src="image/5.jpg" alt="Photo 5">
+                        <div class="caption">Memory 5</div>
+                    </div>
+                </div>
+                <!-- Photo 6 -->
+                <div class="hanging-photo-container" style="--sway-delay: 0.7s; --string-height: 110px; --rotate-angle: 2deg;">
+                    <div class="peg"></div>
+                    <div class="string"></div>
+                    <div class="polaroid">
+                        <img src="image/6.jpg" alt="Photo 6">
+                        <div class="caption">Memory 6</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Back Button for Photos -->
+        <button class="back-btn" id="photosBackBtn"><i class="fa-solid fa-arrow-left"></i> Back</button>
     </div>
 
     <!-- Transition Loader Wrapper -->
@@ -295,6 +368,11 @@ My love is like unspoken words, incomplete without you. This friendship is beaut
         // Start page entrance animations
         document.body.classList.add('started');
 
+        // Automatically set intro to complete after 19 seconds
+        setTimeout(() => {
+            document.body.classList.add('intro-complete');
+        }, 19000);
+
         // Fade out welcome overlay
         welcomeOverlay.classList.add('fade-out');
         setTimeout(() => {
@@ -315,25 +393,115 @@ My love is like unspoken words, incomplete without you. This friendship is beaut
         }
     });
 
+    // Dynamic Settling Hearts Transition Animation (Black screen, hearts pile up and fill screen)
+    function createHeartSettlingTransition(callback) {
+        const overlay = document.createElement('div');
+        overlay.className = 'heart-settling-overlay';
+        document.body.appendChild(overlay);
+
+        const heartEmojis = ['❤️', '💖', '💝', '💕', '💗', '💓', '💘'];
+        const totalHearts = 250;
+        let heartsSpawned = 0;
+
+        function spawnHeart() {
+            if (heartsSpawned >= totalHearts) return;
+
+            const heart = document.createElement('div');
+            heart.className = 'settling-heart';
+            heart.innerText = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+            
+            // Random horizontal placement
+            const x = Math.random() * 100;
+            heart.style.left = x + 'vw';
+
+            // Random size
+            const size = Math.random() * 30 + 20; // 20px to 50px
+            heart.style.fontSize = size + 'px';
+
+            // Calculate bottom level height based on spawn count progress
+            const progress = heartsSpawned / totalHearts;
+            const targetBottom = progress * 105; // 0 to 105vh
+            const jitter = (Math.random() * 10 - 5);
+            const finalBottom = Math.max(0, targetBottom + jitter);
+
+            // Start falling from above viewport
+            heart.style.bottom = '110vh';
+            overlay.appendChild(heart);
+
+            // Fast fall transition to final bottom position
+            const duration = Math.random() * 0.8 + 0.8;
+            heart.style.transition = `bottom ${duration}s cubic-bezier(0.25, 0.46, 0.45, 0.94)`;
+            
+            setTimeout(() => {
+                heart.style.bottom = finalBottom + 'vh';
+                heart.style.transform = `rotate(${Math.random() * 60 - 30}deg)`;
+            }, 50);
+
+            heartsSpawned++;
+            
+            const delay = Math.max(5, 30 - (progress * 25));
+            setTimeout(spawnHeart, delay);
+        }
+
+        // Start heart avalanche
+        spawnHeart();
+
+        // Perform view transition when screen is mostly covered
+        setTimeout(() => {
+            callback();
+        }, 2800);
+
+        // Fade out transition overlay
+        setTimeout(() => {
+            overlay.style.transition = 'opacity 1.0s ease';
+            overlay.style.opacity = '0';
+            setTimeout(() => {
+                overlay.remove();
+            }, 1000);
+        }, 3200);
+    }
+
+    // Staggered Photo Entrance animations (rope curve slide down)
+    function triggerStaggeredPhotos() {
+        const containers = document.querySelectorAll('.hanging-photo-container');
+        
+        // Remove class to reset animation state
+        containers.forEach(container => {
+            container.classList.remove('slide-down');
+            void container.offsetWidth; // force layout reflow
+        });
+
+        // Add class with 2-second stagger intervals
+        containers.forEach((container, index) => {
+            setTimeout(() => {
+                if (document.getElementById('photosPage').style.display === 'flex') {
+                    container.classList.add('slide-down');
+                }
+            }, index * 2000);
+        });
+    }
+
     // SPA Navigation transition logic
-    const landingMail = document.querySelector(".landing-mail");
+    const mailBtn = document.querySelector(".landing-mail button");
+    const heartBtn = document.querySelector(".landing-mail .heartMail");
+    
     const landingWrapper = document.querySelector(".wrapper");
     const mailWrapper = document.getElementById("mailPage");
+    const photosWrapper = document.getElementById("photosPage");
     const loaderWrapper = document.getElementById("transitionLoader");
 
-    landingMail.addEventListener("click", () => {
-        // 1. Show the loader wrapper
+    // Mail button click handler
+    mailBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
         loaderWrapper.style.display = "block";
         loaderWrapper.style.opacity = "1";
         
-        // 2. Perform background switch after 1.2s
         setTimeout(() => {
             landingWrapper.style.display = "none";
             mailWrapper.style.display = "flex";
             mailWrapper.classList.add('active');
             document.body.classList.remove('preloading');
             
-            // 3. Fade out loader wrapper smoothly
             loaderWrapper.style.transition = "opacity 0.5s ease";
             loaderWrapper.style.opacity = "0";
             
@@ -341,6 +509,33 @@ My love is like unspoken words, incomplete without you. This friendship is beaut
                 loaderWrapper.style.display = "none";
             }, 500);
         }, 1200);
+    });
+
+    // Heart button click handler (settling hearts transition and staggered photos)
+    heartBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        createHeartSettlingTransition(() => {
+            landingWrapper.style.display = "none";
+            photosWrapper.style.display = "flex";
+            triggerStaggeredPhotos();
+        });
+    });
+
+    // Back buttons return to landing options immediately (intro complete)
+    const mailBackBtn = document.getElementById("mailBackBtn");
+    const photosBackBtn = document.getElementById("photosBackBtn");
+
+    mailBackBtn.addEventListener("click", () => {
+        mailWrapper.style.display = "none";
+        mailWrapper.classList.remove('active');
+        document.body.classList.add('intro-complete'); // skip intro
+        landingWrapper.style.display = "flex";
+    });
+
+    photosBackBtn.addEventListener("click", () => {
+        photosWrapper.style.display = "none";
+        document.body.classList.add('intro-complete'); // skip intro
+        landingWrapper.style.display = "flex";
     });
 </script>
 </html>
