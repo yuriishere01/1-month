@@ -319,41 +319,47 @@
 @media screen and (max-width: 658px) {
     .box {
         position: relative;
-        width: 307px;
-        height: 432px;
+        width: 90%;
+        max-width: 420px;
+        height: auto;
+        min-height: 420px;
         background: rgba(253, 233, 234, 0.9);
         border-radius: 5px;
-        box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
         display: flex;
         justify-content: center;
-        padding: 24px;
+        padding: 16px;
         align-items: center;
     }
 
     .gifs_left {
         position: absolute;
-        width: 92px;
-        bottom: -16px;
-        left: -37px;
+        width: 80px;
+        bottom: -35px;
+        left: -20px;
     }
 
     .gifs_right {
         position: absolute;
-        width: 92px;
-        top: -34px;
-        right: -33px;
+        width: 80px;
+        top: -45px;
+        right: -20px;
     }
 
     .mail {
-        width: 550px;
-        height: 407px;
+        width: 100%;
+        height: auto;
+        min-height: 388px;
         border: 2px dashed rgb(167, 32, 71);
         border-radius: 15px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
 
     .content .title h2 {
         font-family: 'Dancing Script', cursive;
-        font-size: 2rem;
+        font-size: 1.8rem;
         color: rgb(181, 12, 17);
         opacity: 0;
         transform: translateY(-40px);
@@ -366,18 +372,12 @@
     }
 
     .content p {
-        padding: 21px 40px;
-        font-size: 1rem;
+        padding: 15px 24px;
+        font-size: 1.05rem;
+        line-height: 1.4;
         font-family: 'Dancing Script', cursive;
         opacity: 0;
         transition: all 1s;
-    }
-
-    .gifs_left {
-        position: absolute;
-        width: 92px;
-        bottom: -69px;
-        left: -37px;
     }
 }
 .music-btn {
